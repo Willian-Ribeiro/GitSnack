@@ -26,8 +26,14 @@ repositories {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	// dependencia abaixo usada apenas quando quero paginas HTML simples, no caso estou usando JSP
+	//compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile('javax.servlet:jstl')
+	compile('org.apache.tomcat.embed:tomcat-embed-jasper')
+	compile('org.springframework.boot:spring-boot-devtools')
+	
+	runtime('org.springframework.boot:spring-boot-starter-tomcat')
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('org.postgresql:postgresql')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
