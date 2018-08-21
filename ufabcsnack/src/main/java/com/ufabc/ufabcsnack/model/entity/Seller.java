@@ -30,4 +30,56 @@ public class Seller {
 	@Column (name="status")
 	private int status;
 
+	public long getID() {
+		return ID;
+	}
+
+	public void setID(long iD) {
+		ID = iD;
+	}
+
+	public String getSellerDesc() {
+		return sellerDesc;
+	}
+
+	public void setSellerDesc(String sellerDesc) {
+		this.sellerDesc = sellerDesc;
+	}
+
+	public String getSellerName() {
+		return sellerName;
+	}
+
+	public void setSellerName(String sellerName) {
+		this.sellerName = sellerName;
+	}
+
+	public float getPositionX() {
+		return positionX;
+	}
+
+	public void setPositionX(float positionX) {
+		this.positionX = positionX;
+	}
+
+	public float getPositionY() {
+		return positionY;
+	}
+
+	public void setPositionY(float positionY) {
+		this.positionY = positionY;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	
+	
+	
+	
+
 }
