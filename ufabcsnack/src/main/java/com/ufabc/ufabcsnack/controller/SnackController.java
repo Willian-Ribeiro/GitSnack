@@ -24,27 +24,33 @@ import com.ufabc.ufabcsnack.model.entity.SnackUser;
 @Controller
 public class SnackController {
 
-	
+
 	// instanciacao dos 5 DAOs
 	@Autowired
 	SellerDAO sellerDAO;
-	
+
 	@Autowired
 	UserDAO userDAO;
-	
+
 	@Autowired
 	FullProductDAO fullproductDAO;
-	
+
 	@Autowired
 	ProductDAO productDAO;
-	
+
 	@Autowired
 	StoreDAO storeDAO;
 
-	
+
 	// metodos para user
-	
-	
+
+	// redireciona para a pagina de cadastro
+	@RequestMapping(value = {"", "/index"})
+	public ModelAndView snackUser() {
+		return new ModelAndView("index");
+	}
+
+
 	// redireciona para a pagina de cadastro
 	@RequestMapping("/cadastro")
 	public ModelAndView cadastro()
@@ -54,10 +60,10 @@ public class SnackController {
 
 
 	// abre pagina de cadastro de usuario
-	@RequestMapping(value = {"/", "/index"})
+	@RequestMapping(value = {"/snackUser"})
 	public ModelAndView execute() {
 
-		ModelAndView mv = new ModelAndView("index");
+		ModelAndView mv = new ModelAndView("snackUser");
 
 		mv.addObject("userList", userDAO.findAll());
 
@@ -75,10 +81,26 @@ public class SnackController {
 		user.setPassword(password);
 		user.setTipo(tipoInt);
 		userDAO.save(user);
-		
+
 		ModelAndView mv = new ModelAndView("confirmacao");
 		//mv.addObject("user", user);
 
+		return mv;
+	}
+
+	// salvar user no bd
+	@RequestMapping("/editar")
+	public ModelAndView editarUser(@RequestParam("id") long id, @RequestParam("password") String password,
+			@RequestParam("tipo") String tipo)
+	{
+		// coverto o tipo de boolean para int
+		SnackUser user = new SnackUser();
+		user.setPassword(password);
+		user.setTipo(Integer.parseInt(tipo));
+		user.setID(id);
+		userDAO.save(user);
+
+		ModelAndView mv = new ModelAndView("snackUser");
 		return mv;
 	}
 
@@ -108,64 +130,64 @@ public class SnackController {
 		userDAO.deleteById(id);
 		return mv;
 	}
-	
-	
+
+
+
 	// ##############################################~|Product|~#####################################################
-	
+
 
 	// abre pagina de cadastro de usuario
-	@RequestMapping(value = {"/", "/index"})
+	@RequestMapping(value = {"/product"})
 	public ModelAndView findAllProducts() {
 
-		ModelAndView mv = new ModelAndView("index");
+		ModelAndView mv = new ModelAndView("product");
 
 		mv.addObject("productsList", productDAO.findAll());
-
 		return mv;
 	}
 
 
 	// ##############################################~|FullProduct|~#####################################################
-	
-	
-	
+
+
+
 	// ##############################################~|Seller|~#####################################################
-	
-		// abre pagina de cadastro de usuario
-		@RequestMapping(value = {"/", "/index"})
-		public ModelAndView findAllSellers() {
 
-			ModelAndView mv = new ModelAndView("index");
+	// abre pagina de cadastro de usuario
+	@RequestMapping(value = {"/seller"})
+	public ModelAndView findAllSellers() {
 
-			mv.addObject("sellerList", sellerDAO.findAll());
+		ModelAndView mv = new ModelAndView("seller");
 
-			return mv;
-		}
-		
+		mv.addObject("sellerList", sellerDAO.findAll());
 
-		@RequestMapping(value = {"/add"}, method = RequestMethod.GET)
-		public @ResponseBody
-		Seller add(HttpServletRequest request, HttpServletResponse response)
-				throws Exception {
+		return mv;
+	}
 
-			Seller seller = new Seller();
 
-			seller.setSellerDesc("Seller Desc");
-			seller.setSellerName("Seller Name");
-			seller.setPositionX((float) 11.1);
-			seller.setPositionY((float) 22.2);
-			seller.setStatus(33);
+	@RequestMapping(value = {"/add"}, method = RequestMethod.GET)
+	public @ResponseBody
+	Seller add(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 
-			return seller;
-		}
-		
-		
-		
-	
-	
+		Seller seller = new Seller();
+
+		seller.setSellerDesc("Seller Desc");
+		seller.setSellerName("Seller Name");
+		seller.setPositionX((float) 11.1);
+		seller.setPositionY((float) 22.2);
+		seller.setStatus(33);
+
+		return seller;
+	}
+
+
+
+
+
 	// ##############################################~|Store|~#####################################################
-	
-	
-	
-	
+
+
+
+
 }
