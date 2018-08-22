@@ -27,4 +27,48 @@ public class Store {
 	@Column (name="productID")
 	private Integer productID;
 
+	
+	
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
+
+	public String getSellerID() {
+		return sellerID;
+	}
+
+	public void setSellerID(String sellerID) {
+		this.sellerID = sellerID;
+	}
+
+	public Float getProductPrice() {
+		return productPrice;
+	}
+
+	public void setProductPrice(Float productPrice) {
+		this.productPrice = productPrice;
+	}
+
+	public Integer getProductQty() {
+		return productQty;
+	}
+
+	public void setProductQty(Integer productQty) {
+		this.productQty = productQty;
+	}
+
+	public Integer getProductID() {
+		return productID;
+	}
+
+	public void setProductID(Integer productID) {
+		this.productID = productID;
+	}
+
+	
+	
 }

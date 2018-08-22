@@ -7,20 +7,19 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Cadastro de Usuarios</title>
+<title>Cadastro de Produtos</title>
 </head>
 
 
 <body>
 
-	<h2>Cadastro de Usuarios</h2>
-	<form action ="/salvar" method="post">
-		Digite sua password: <br>
-		<input type ="text" name="password" value="pwd" size="25" />
+	<h2>Cadastro de Produto</h2>
+	<form action ="/salvarProduct" method="post">
+		Digite o nome do produto: <br>
+		<input type ="text" name="productName" value="nome" size="25" />
 		<br>
-		Que tipo de conta voce gostaria de ter: <br>
-		<input type ="radio" name="tipo" value="False" checked />SnackUser <br>
-		<input type ="radio" name="tipo" value="True"/>Seller
+		Digite a descricao do produto: <br>
+		<input type ="text" name="productDesc" value="nome" size="25" />
 		<br>
 		<input type ="submit" value="Submeter" />
 	</form>

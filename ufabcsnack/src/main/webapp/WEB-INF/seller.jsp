@@ -20,10 +20,11 @@
 
     <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
+
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
 
 	<style type="text/css"> <%@ include file="mapa-configuration.css" %> </style>
-
+	
     <title>UFABC snack</title>
 </head>
 <body>
@@ -56,8 +57,11 @@
 		document.getElementById('id').value = id;
 		var linhaTabela = document.getElementById('row_'+id);
 		var celulas = linhaTabela.getElementsByTagName("td");
-		document.getElementById('password').value = celulas[1].textContent;
-		document.getElementById('tipo').value = celulas[2].textContent;
+		document.getElementById('sellerName').value = celulas[1].textContent;
+		document.getElementById('sellerDesc').value = celulas[2].textContent;
+		document.getElementById('positionX').value = celulas[3].textContent;
+		document.getElementById('positionY').value = celulas[4].textContent;
+		document.getElementById('status').value = celulas[5].textContent;
 	}
 	
 	</script>
@@ -67,21 +71,27 @@
 		<thead>
 			<tr>
 				<th><b>ID</b></th>
-				<th><b>Password</b></th>
-				<th><b>Tipo</b></th>
+				<th><b>Nome do Vendedor</b></th>
+				<th><b>Descricao do Vendedor</b></th>
+				<th><b>Posicao X do Vendedor</b></th>
+				<th><b>Posicao Y do Vendedor</b></th>
+				<th><b>Status do Vendedor</b></th>
 				<th><b>Editar</b></th>
 				<th><b>Remover</b></th>
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${userList}" var="uL">
-				<tr id="row_${uL.ID}">
-					<td><c:out value="${uL.ID}"></c:out></td>
-					<td><c:out value="${uL.password}"></c:out></td>
-					<td><c:out value="${uL.tipo}"></c:out></td>
+			<c:forEach items="${sellerList}" var="pL">
+				<tr id="row_${pL.ID}">
+					<td><c:out value="${pL.ID}"></c:out></td>
+					<td><c:out value="${pL.sellerName}"></c:out></td>
+					<td><c:out value="${pL.sellerDesc}"></c:out></td>
+					<td><c:out value="${pL.positionX}"></c:out></td>
+					<td><c:out value="${pL.positionY}"></c:out></td>
+					<td><c:out value="${pL.status}"></c:out></td>
 					<td align="center"><input type="radio" name="alterar"
-							value="${uL.ID}" onClick="copiaDados(value)"></td>
-					<td><a href="/remove_user/${uL.ID}"><button type="submit">Remover</button>
+							value="${pL.ID}" onClick="copiaDados(value)"></td>
+					<td><a href="/remove_seller/${pL.ID}"><button type="submit">Remover</button>
 					</a></td>
 				</tr>
 			</c:forEach>
@@ -89,18 +99,21 @@
 	</table>
 	
 	
-	<form action="/editarUser" method="post">
+	<form action="/editarSeller" method="post">
 		ID: <input type="text" id="id" name="id" readonly style="color: #AAAAAA" /><br>
-		Password: <input type="text" id="password" name="password" /><br>
-		Tipo: <input type="text"	id="tipo" name="tipo" /><br>
+		Nome do Vendedor: <input type="text" id="sellerName" name="sellerName" /><br>
+		Descricao do Vendedor: <input type="text"	id="sellerDesc" name="sellerDesc" /><br>
+		Posicao X do Vendedor: <input type="text"	id="positionX" name="positionX" /><br>
+		Posicao Y do Vendedor: <input type="text"	id="positionY" name="positionY" /><br>
+		Status do Vendedor: <input type="text"	id="status" name="status" /><br>
 		<input type="submit" name="action" value="Alterar" />
 	</form>
 
 
 
 
-	<form action="/cadastro_snackuser" method="post">
-		<input type="submit" value="Cadastrar Novo Usuario" />
+	<form action="/cadastro_seller" method="post">
+		<input type="submit" value="Cadastrar Novo Vendedor" />
 	</form>
 	
 

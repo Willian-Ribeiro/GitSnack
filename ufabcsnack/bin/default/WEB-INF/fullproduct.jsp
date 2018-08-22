@@ -20,10 +20,11 @@
 
     <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
+
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
 
 	<style type="text/css"> <%@ include file="mapa-configuration.css" %> </style>
-
+	
     <title>UFABC snack</title>
 </head>
 <body>
@@ -56,8 +57,8 @@
 		document.getElementById('id').value = id;
 		var linhaTabela = document.getElementById('row_'+id);
 		var celulas = linhaTabela.getElementsByTagName("td");
-		document.getElementById('password').value = celulas[1].textContent;
-		document.getElementById('tipo').value = celulas[2].textContent;
+		document.getElementById('productQty').value = celulas[1].textContent;
+		document.getElementById('productPrice').value = celulas[2].textContent;
 	}
 	
 	</script>
@@ -67,21 +68,21 @@
 		<thead>
 			<tr>
 				<th><b>ID</b></th>
-				<th><b>Password</b></th>
-				<th><b>Tipo</b></th>
+				<th><b>Quantidade do Produto</b></th>
+				<th><b>Preco do Produto</b></th>
 				<th><b>Editar</b></th>
 				<th><b>Remover</b></th>
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${userList}" var="uL">
-				<tr id="row_${uL.ID}">
-					<td><c:out value="${uL.ID}"></c:out></td>
-					<td><c:out value="${uL.password}"></c:out></td>
-					<td><c:out value="${uL.tipo}"></c:out></td>
+			<c:forEach items="${productList}" var="pL">
+				<tr id="row_${pL.ID}">
+					<td><c:out value="${pL.ID}"></c:out></td>
+					<td><c:out value="${pL.productQty}"></c:out></td>
+					<td><c:out value="${pL.productPrice}"></c:out></td>
 					<td align="center"><input type="radio" name="alterar"
-							value="${uL.ID}" onClick="copiaDados(value)"></td>
-					<td><a href="/remove_user/${uL.ID}"><button type="submit">Remover</button>
+							value="${pL.ID}" onClick="copiaDados(value)"></td>
+					<td><a href="/remove_fullproduct/${pL.ID}"><button type="submit">Remover</button>
 					</a></td>
 				</tr>
 			</c:forEach>
@@ -89,18 +90,18 @@
 	</table>
 	
 	
-	<form action="/editarUser" method="post">
+	<form action="/editarFullProduct" method="post">
 		ID: <input type="text" id="id" name="id" readonly style="color: #AAAAAA" /><br>
-		Password: <input type="text" id="password" name="password" /><br>
-		Tipo: <input type="text"	id="tipo" name="tipo" /><br>
+		Nome do Produto: <input type="text" id="productQty" name="productQty" /><br>
+		Descricao do Produto: <input type="text"	id="productPrice" name="productPrice" /><br>
 		<input type="submit" name="action" value="Alterar" />
 	</form>
 
 
 
 
-	<form action="/cadastro_snackuser" method="post">
-		<input type="submit" value="Cadastrar Novo Usuario" />
+	<form action="/cadastro_fullproduct" method="post">
+		<input type="submit" value="Cadastrar Novo FullProduto" />
 	</form>
 	
 

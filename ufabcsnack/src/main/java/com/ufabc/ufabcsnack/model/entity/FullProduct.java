@@ -21,4 +21,31 @@ public class FullProduct {
 	@Column (name="productPrice")
 	private float productPrice;
 
+	public long getID() {
+		return ID;
+	}
+
+	public void setID(long iD) {
+		ID = iD;
+	}
+
+	public int getProductQty() {
+		return productQty;
+	}
+
+	public void setProductQty(int productQty) {
+		this.productQty = productQty;
+	}
+
+	public float getProductPrice() {
+		return productPrice;
+	}
+
+	public void setProductPrice(float productPrice) {
+		this.productPrice = productPrice;
+	}
+
+	
+	
+	
 }

@@ -1,5 +1,7 @@
 package com.ufabc.ufabcsnack.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,8 +20,10 @@ import com.ufabc.ufabcsnack.model.dao.SellerDAO;
 import com.ufabc.ufabcsnack.model.dao.StoreDAO;
 import com.ufabc.ufabcsnack.model.dao.UserDAO;
 import com.ufabc.ufabcsnack.model.entity.FullProduct;
+import com.ufabc.ufabcsnack.model.entity.Product;
 import com.ufabc.ufabcsnack.model.entity.Seller;
 import com.ufabc.ufabcsnack.model.entity.SnackUser;
+import com.ufabc.ufabcsnack.model.entity.Store;
 
 @Controller
 public class SnackController {
@@ -42,26 +46,29 @@ public class SnackController {
 	StoreDAO storeDAO;
 
 
-	// metodos para user
+
 
 	// redireciona para a pagina de cadastro
 	@RequestMapping(value = {"", "/index"})
-	public ModelAndView snackUser() {
+	public ModelAndView execute() {
 		return new ModelAndView("index");
 	}
 
 
-	// redireciona para a pagina de cadastro
-	@RequestMapping("/cadastro")
-	public ModelAndView cadastro()
+
+	// metodos para user
+
+	// redireciona para a pagina de cadastro de user
+	@RequestMapping("/cadastro_SnackUser")
+	public ModelAndView cadastroSnackUser()
 	{
-		return new ModelAndView("cadastro");
+		return new ModelAndView("cadastroSnackUser");
 	}
 
 
-	// abre pagina de cadastro de usuario
+	// abre pagina comtodos os usuarios e que podem ser editados
 	@RequestMapping(value = {"/snackUser"})
-	public ModelAndView execute() {
+	public ModelAndView snackUser() {
 
 		ModelAndView mv = new ModelAndView("snackUser");
 
@@ -71,7 +78,7 @@ public class SnackController {
 	}
 
 	// salvar user no bd
-	@RequestMapping("/salvar")
+	@RequestMapping("/salvarUser")
 	public ModelAndView salvarUser(@RequestParam("password") String password,
 			@RequestParam("tipo") boolean tipo)
 	{
@@ -88,8 +95,8 @@ public class SnackController {
 		return mv;
 	}
 
-	// salvar user no bd
-	@RequestMapping("/editar")
+	// editar user no bd
+	@RequestMapping("/editarUser")
 	public ModelAndView editarUser(@RequestParam("id") long id, @RequestParam("password") String password,
 			@RequestParam("tipo") String tipo)
 	{
@@ -100,11 +107,25 @@ public class SnackController {
 		user.setID(id);
 		userDAO.save(user);
 
-		ModelAndView mv = new ModelAndView("snackUser");
+		ModelAndView mv = new ModelAndView("index");
 		return mv;
 	}
 
-	// recebo os parametros digitados pelo usuario e os atualizo no BD
+	// recebo id da conta e a removo do bd
+	@RequestMapping("/remove_user/{id}")
+	public ModelAndView removeUser(@PathVariable Long id)
+	{
+		// recupero a conta a se remover atraves do id
+		//SnackUser temp = userDAO.getOne(id);
+
+		ModelAndView mv = new ModelAndView("index");
+		//mv.addObject("user", temp);
+
+		userDAO.deleteById(id);
+		return mv;
+	} 
+
+	/*// recebo os parametros digitados pelo usuario e os atualizo no BD
 	@RequestMapping("/edit/{id}")
 	public ModelAndView editar(@PathVariable Long id)
 	{
@@ -113,81 +134,296 @@ public class SnackController {
 		ModelAndView mv = new ModelAndView("editar");
 		mv.addObject("conta", temp);
 		return mv;
-	}
-
-	// recebo id da conta e a removo do bd
-	@RequestMapping("/remove/{id}")
-	public ModelAndView remove(@PathVariable Long id)
-	{
-		System.out.println("O valor recebido foi: " + id);
-
-		// recupero a conta a se remover atraves do id
-		SnackUser temp = userDAO.getOne(id);
-
-		ModelAndView mv = new ModelAndView("remove");
-		mv.addObject("user", temp);
-
-		userDAO.deleteById(id);
-		return mv;
-	}
+	} */
 
 
 
 	// ##############################################~|Product|~#####################################################
 
 
-	// abre pagina de cadastro de usuario
+
+
+	// redireciona para a pagina de cadastro de product
+	@RequestMapping("/cadastro_product")
+	public ModelAndView cadastroProduct()
+	{
+		return new ModelAndView("cadastro_product");
+	}
+
+
+	// abre pagina de cadastro de produtos
 	@RequestMapping(value = {"/product"})
 	public ModelAndView findAllProducts() {
 
 		ModelAndView mv = new ModelAndView("product");
 
-		mv.addObject("productsList", productDAO.findAll());
+		mv.addObject("productList", productDAO.findAll());
 		return mv;
 	}
+
+	// retorna lista de produtos
+	@RequestMapping(value = {"/productList"})
+	public List<Product> productList() {
+		// retorna lista de produtos
+		return productDAO.findAll();
+	}
+
+
+	// salvar product no bd
+	@RequestMapping("/salvarProduct")
+	public ModelAndView salvaroProduct(@RequestParam("productName") String productName,
+			@RequestParam("productDesc") String productDesc)
+	{
+		Product pdt = new Product();
+		pdt.setProductName(productName);
+		pdt.setProductDesc(productDesc);
+		productDAO.save(pdt);
+
+		ModelAndView mv = new ModelAndView("index");
+		return mv;
+	}
+
+	// editar product no bd
+	@RequestMapping("/editarProduct")
+	public ModelAndView editarProduct(@RequestParam("id") long id, @RequestParam("productName") String productName,
+			@RequestParam("productDesc") String productDesc)
+	{
+		Product pdt = new Product();
+		pdt.setProductName(productName);
+		pdt.setProductDesc(productDesc);
+		pdt.setID(id);
+		productDAO.save(pdt);
+
+		ModelAndView mv = new ModelAndView("index");
+		return mv;
+	}
+
+	// recebo id da conta e a removo do bd
+	@RequestMapping("/remove_product/{id}")
+	public ModelAndView removeProduct(@PathVariable Long id)
+	{
+		ModelAndView mv = new ModelAndView("index");
+		productDAO.deleteById(id);
+		return mv;
+	} 
 
 
 	// ##############################################~|FullProduct|~#####################################################
 
 
+	// redireciona para a pagina de cadastro de product
+	@RequestMapping("/cadastro_fullproduct")
+	public ModelAndView cadastroFullProduct()
+	{
+		return new ModelAndView("cadastro_fullproduct");
+	}
+
+
+	// abre pagina de cadastro de produtos
+	@RequestMapping(value = {"/fullproduct"})
+	public ModelAndView findAllFullProducts() {
+
+		ModelAndView mv = new ModelAndView("fullproduct");
+
+		mv.addObject("fullproductList", fullproductDAO.findAll());
+		return mv;
+	}
+
+	// retorna lista de produtos
+	@RequestMapping(value = {"/fullproductList"})
+	public List<FullProduct> fullProductList() {
+		// retorna lista de produtos
+		return fullproductDAO.findAll();
+	}
+
+
+	// salvar fullproduct no bd
+	@RequestMapping("/salvarFullProduct")
+	public ModelAndView salvarFullProduct(@RequestParam("productQty") int productQty,
+			@RequestParam("productPrice") Float productPrice)
+	{
+		FullProduct fp = new FullProduct();
+		fp.setProductPrice(productQty);
+		fp.setProductPrice(productPrice);
+		fullproductDAO.save(fp);
+
+		ModelAndView mv = new ModelAndView("index");
+		return mv;
+	}
+
+	// editar fullproduct no bd
+	@RequestMapping("/editarFullProduct")
+	public ModelAndView editarFullProduct(@RequestParam("id") long id, @RequestParam("productPrice") int productQty,
+			@RequestParam("productDesc") Float productPrice)
+	{
+		FullProduct fp = new FullProduct();
+		fp.setProductPrice(productQty);
+		fp.setProductPrice(productPrice);
+		fp.setID(id);
+		fullproductDAO.save(fp);
+
+		ModelAndView mv = new ModelAndView("index");
+		return mv;
+	}
+
+	// recebo id da conta e a removo do bd
+	@RequestMapping("/remove_fullproduct/{id}")
+	public ModelAndView removeFullProduct(@PathVariable Long id)
+	{
+		ModelAndView mv = new ModelAndView("index");
+		fullproductDAO.deleteById(id);
+		return mv;
+	} 
 
 	// ##############################################~|Seller|~#####################################################
 
-	// abre pagina de cadastro de usuario
+	// redireciona para a pagina de cadastro de product
+	@RequestMapping("/cadastro_seller")
+	public ModelAndView cadastroSeller()
+	{
+		return new ModelAndView("cadastro_seller");
+	}
+
+
+	// abre pagina de cadastro de produtos
 	@RequestMapping(value = {"/seller"})
 	public ModelAndView findAllSellers() {
 
 		ModelAndView mv = new ModelAndView("seller");
 
 		mv.addObject("sellerList", sellerDAO.findAll());
-
 		return mv;
 	}
 
-
-	@RequestMapping(value = {"/add"}, method = RequestMethod.GET)
-	public @ResponseBody
-	Seller add(HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-
-		Seller seller = new Seller();
-
-		seller.setSellerDesc("Seller Desc");
-		seller.setSellerName("Seller Name");
-		seller.setPositionX((float) 11.1);
-		seller.setPositionY((float) 22.2);
-		seller.setStatus(33);
-
-		return seller;
+	// retorna lista de produtos
+	@RequestMapping(value = {"/sellerList"})
+	public List<Seller> sellerList() {
+		// retorna lista de produtos
+		return sellerDAO.findAll();
 	}
 
+	// salvar seller no bd
+	@RequestMapping("/salvarSeller")
+	public ModelAndView salvarSeller(@RequestParam("sellerDesc") String sellerDesc,
+			@RequestParam("sellerName") String sellerName, @RequestParam("positionX") float positionX,
+			@RequestParam("positionY") float positionY, @RequestParam("status") int status)
+	{
+		Seller sel = new Seller();
+		sel.setSellerDesc(sellerDesc);
+		sel.setSellerName(sellerName);
+		sel.setPositionX(positionX);
+		sel.setPositionY(positionY);
+		sel.setStatus(status);
+		sellerDAO.save(sel);
+
+		ModelAndView mv = new ModelAndView("index");
+		return mv;
+	}
+
+	// editar seller no bd
+	@RequestMapping("/editarSeller")
+	public ModelAndView editarSeller(@RequestParam("id") long id, @RequestParam("sellerDesc") String sellerDesc,
+			@RequestParam("sellerName") String sellerName, @RequestParam("positionX") float positionX,
+			@RequestParam("positionY") float positionY, @RequestParam("status") int status)
+	{
+		Seller sel = new Seller();
+		sel.setID(id);
+		sel.setSellerDesc(sellerDesc);
+		sel.setSellerName(sellerName);
+		sel.setPositionX(positionX);
+		sel.setPositionY(positionY);
+		sel.setStatus(status);
+		sellerDAO.save(sel);
+
+		return  new ModelAndView("index");
+	}
+
+	// recebo id da conta e a removo do bd
+	@RequestMapping("/remove_seller/{id}")
+	public ModelAndView removeSeller(@PathVariable Long id)
+	{
+		ModelAndView mv = new ModelAndView("index");
+		sellerDAO.deleteById(id);
+		return mv;
+	} 
 
 
 
 
 	// ##############################################~|Store|~#####################################################
 
+	
+	
+	
+
+	// redireciona para a pagina de cadastro de store
+	@RequestMapping("/cadastro_store")
+	public ModelAndView cadastroStore()
+	{
+		return new ModelAndView("cadastro_store");
+	}
 
 
+	// abre pagina de cadastro de store
+	@RequestMapping(value = {"/store"})
+	public ModelAndView findAllStores() {
+
+		ModelAndView mv = new ModelAndView("store");
+
+		mv.addObject("storeList", storeDAO.findAll());
+		return mv;
+	}
+
+	// retorna lista de stores
+	@RequestMapping(value = {"/storeList"})
+	public List<Store> storeList() {
+		// retorna lista de produtos
+		return storeDAO.findAll();
+	}
+
+
+	// salvar store no bd
+	@RequestMapping("/salvarStore")
+	public ModelAndView salvarProduct(@RequestParam("sellerID") String sellerID,
+			@RequestParam("productPrice") Float productPrice, @RequestParam("productQty") Integer productQty,
+			@RequestParam("productID") Integer productID)
+	{
+		Store store = new Store();
+		store.setSellerID(sellerID);
+		store.setProductPrice(productPrice);
+		store.setProductQty(productQty);
+		store.setProductID(productID);
+		storeDAO.save(store);
+
+		ModelAndView mv = new ModelAndView("index");
+		return mv;
+	}
+
+	// editar user no bd
+	@RequestMapping("/editarStore")
+	public ModelAndView editarStore(@RequestParam("id") long id, @RequestParam("sellerID") String sellerID,
+			@RequestParam("productPrice") Float productPrice, @RequestParam("productQty") Integer productQty,
+			@RequestParam("productID") Integer productID)
+	{
+		Store store = new Store();
+		store.setSellerID(sellerID);
+		store.setProductPrice(productPrice);
+		store.setProductQty(productQty);
+		store.setProductID(productID);
+		store.setID(id);
+		storeDAO.save(store);
+
+		ModelAndView mv = new ModelAndView("index");
+		return mv;
+	}
+
+	// recebo id da conta e a removo do bd
+	@RequestMapping("/remove_store/{id}")
+	public ModelAndView removeStore(@PathVariable Long id)
+	{
+		ModelAndView mv = new ModelAndView("index");
+		storeDAO.deleteById(id);
+		return mv;
+	}
 
 }

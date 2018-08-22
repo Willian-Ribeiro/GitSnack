@@ -1,5 +1,5 @@
-
-//madeAjaxCall();
+//função que tinha o propósito de comunicação com backend
+//sellerSearch();
 
 customMarker = L.Marker.extend({
 options: {
@@ -7,6 +7,13 @@ seller: ''
 }});
 
 var mymap = L.map('mapid').setView([-23.6446169, -46.5283129], 18);
+
+mymap.dragging.disable();
+mymap.touchZoom.disable();
+mymap.doubleClickZoom.disable();
+mymap.scrollWheelZoom.disable();
+mymap.boxZoom.disable();
+mymap.keyboard.disable();
 
 var ma2 = new customMarker([-23.6446169, -46.5283129],{seller: "Julia Tretona"});
 ma2.addTo(mymap).on('click', onMapClick);
@@ -24,13 +31,14 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 
 var popup = L.popup();
 
+//ativa cliquer no mapa e popups
 function onMapClick(e) {
     popup
         .setLatLng(e.latlng)
         .setContent(String(e.seller))
-        //.setContent('azul')
+        .setContent('Vendedor')
         .openOn(mymap);
-    myScript();
+    myScript2("Charli");
 
 }
 
@@ -43,6 +51,35 @@ function myScript(){
     }
 }
 
+function myScript2(sellername){
+    //var x = document.querySelector('[data-seller='+sellername+']');
+
+    //    x.style.display = "none";
+	var listItems = document.querySelectorAll('.tabela li');
+	for (let i = 0; i < listItems.length; i++) {
+		alert(String(listItems[i].getAttribute('data-seller')));
+		//if (String(listItems[i].getAttribute('data-seller'))=== sellername ){
+		//	listItems[i].style.display = "block";
+		//}else{
+		//	listItems[i].style.display = "none";
+		//}
+}
+
+}
+
+function crialista(Desc, Preco, vendedor){
+
+   var novo = document.createElement("li");
+   novo.setAttribute('id',Desc);
+   novo.setAttribute('seller-name',vendedor);
+   novo.innerHTML +=  '<strong> ' + Desc + ' </strong></br>' + Preco + '</br>';
+   novo.setAttribute('class', 'list-group-item');
+   document.getElementById("tabela").appendChild(novo);
+   //var anterior = document.getElementById("nome");
+   //document.body.insertBefore(novo, anterior);
+}
+
+
 
 // var ID = 2;
 // function onMapClick(ID) {
@@ -53,6 +90,8 @@ function myScript(){
 //
 // }
 // layer UFABC
+
+//layer que define o contorno das dependências da universidade
 var geojsonLayer = {"type": "Feature",
     "properties": {
         "stroke": "#008040",
@@ -150,7 +189,7 @@ var geojsonLayer = {"type": "Feature",
     }
 };
 
-
+//Adiciona a layer no mapa definida pelas bordas verder
 var geojson = L.geoJson(geojsonLayer, {
     style: function (feature) {
         return {
@@ -162,19 +201,41 @@ var geojson = L.geoJson(geojsonLayer, {
 })
     geojson.addTo(mymap);
 
-    function madeAjaxCall(){
-      $.ajax({
-        type: "get",
-        url: "http://localhost:8080/ufabcsnack/src/main/java/add",
-        cache: false,
-        data:'sellerDesc=' + $("#sellerDesc").val() + "&sellerName;=" + $("#sellerName").val() + "&positionX;=" + $("#positionX").val() + "&positionY;=" + $("#positionY").val() + "&status;=" + $("#status").val(),
-        success: function(response){
-          $('#result').html("");
-          var obj = JSON.parse(response);
-          $('#result').html("nome:- " + obj.SellerDesc +"</br>biscoito:- " + obj.SellerName );
-        },
-        error: function(){
-          alert('Error while request..');
-        }
-      });
-    }
+
+    // function sellerSearch(){
+    //   $.ajax({
+    //     type: "get",
+    //     url: "http://localhost:8080/add",
+    //     cache: false,
+    //     data:'sellerDesc=' + $("#sellerDesc").val() + "&sellerName;=" + $("#sellerName").val() + "&positionX;=" + $("#positionX").val() + "&positionY;=" + $("#positionY").val() + "&status;=" + $("#status").val(),
+    //     success: function(response){
+    //       $('#result').html("");
+    //       var obj = JSON.parse(response);
+    //       for (var i = 0; i < obj.counters.length; i++) {
+    //         var counter =  obj.counters[i];
+    //         criamarker(counter.sellerName,counter.positionX,counter.positionY );
+    //         }
+    //       $('#result').html("nome:- " + obj.SellerDesc +"</br>biscoito:- " + obj.SellerName );
+    //     },
+    //     error: function(){
+    //       alert('Error while request..');
+    //     }
+    //   });
+    // }
+
+function criamarker(Nome, PosX, PosY){
+
+  var ma = new customMarker([PosX, PosY],{seller: Nome});
+  ma.addTo(mymap).on('click', onMapClick);
+
+}
+
+criamarker('Claudia', -23.645489, -46.527630);
+
+criamarker('Nicole', -23.645275, -46.527585);
+
+criamarker('Francine', -23.645034, -46.528102);
+
+crialista ('Sanduíches de presunto','Unidade R$3.50', 'Charli');
+crialista ('Marmitas saudáveis','Unidade R$10.00', 'Paula');
+crialista('Surpresa na Caixa','Unidade R$3,00', 'Charli');

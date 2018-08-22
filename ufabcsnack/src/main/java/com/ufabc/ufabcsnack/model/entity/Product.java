@@ -20,5 +20,36 @@ public class Product {
 	
 	@Column (name="productDesc")
 	private String productDesc;
+
+	
+	
+	
+	
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public String getProductDesc() {
+		return productDesc;
+	}
+
+	public void setProductDesc(String productDesc) {
+		this.productDesc = productDesc;
+	}
+	
+	
+	
 	
 }
